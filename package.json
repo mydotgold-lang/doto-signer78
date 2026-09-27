@@ -4,7 +4,8 @@
   "private":true,
   "type":"commonjs",
   "scripts":{
-    "start":"npm install --omit=dev --no-audit --no-fund && node server.js"
+    "build":"npm install --omit=dev --no-audit --no-fund",
+    "start":"node server.js"
   },
   "engines":{"node":">=20"},
   "dependencies":{
