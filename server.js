@@ -1,6 +1,16 @@
 const express=require("express");
 const fs=require("fs"),path=require("path"),crypto=require("crypto");
-const {ethers}=require("ethers");
+
+process.on("uncaughtException",e=>console.error("UNCAUGHT_EXCEPTION",e&&e.stack||e));
+process.on("unhandledRejection",e=>console.error("UNHANDLED_REJECTION",e&&e.stack||e));
+
+let ethers=null;
+try{
+  ethers=require("ethers").ethers;
+  console.log("Ethers loaded successfully");
+}catch(e){
+  console.error("ETHERS_LOAD_ERROR",e&&e.stack||e);
+}
 
 const app=express();
 app.disable("x-powered-by");
@@ -307,7 +317,5 @@ app.delete("/wallets/:id",guard,(q,r)=>{
 app.listen(PORT,"0.0.0.0",()=>{
   console.log(`DOTO multi-wallet signer listening on ${PORT}`);
   console.log(`RPC endpoints configured: ${RPCS.length}`);
+  console.log(`Ethers available: ${!!ethers}`);
 });
-
-process.on("uncaughtException",e=>console.error("UNCAUGHT_EXCEPTION",e&&e.stack||e));
-process.on("unhandledRejection",e=>console.error("UNHANDLED_REJECTION",e&&e.stack||e));
