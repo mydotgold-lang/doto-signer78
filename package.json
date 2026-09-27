@@ -3,7 +3,12 @@
   "version":"1.0.0",
   "private":true,
   "type":"commonjs",
-  "scripts":{"prestart":"npm install --omit=dev --no-audit --no-fund","start":"node server.js"},
+  "scripts":{
+    "start":"npm install --omit=dev --no-audit --no-fund && node server.js"
+  },
   "engines":{"node":">=20"},
-  "dependencies":{"ethers":"^6.15.0","express":"^5.1.0"}
+  "dependencies":{
+    "ethers":"^6.15.0",
+    "express":"^5.1.0"
+  }
 }
