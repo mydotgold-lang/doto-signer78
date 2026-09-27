@@ -1,5 +1,12 @@
-const express=require("express");
 const fs=require("fs"),path=require("path"),crypto=require("crypto");
+console.log("BOOT: server.js started");
+let express=null;
+try{
+  express=require("express");
+  console.log("BOOT: express loaded");
+}catch(e){
+  console.error("EXPRESS_LOAD_ERROR",e&&e.stack||e);
+}
 
 process.on("uncaughtException",e=>console.error("UNCAUGHT_EXCEPTION",e&&e.stack||e));
 process.on("unhandledRejection",e=>console.error("UNHANDLED_REJECTION",e&&e.stack||e));
@@ -12,6 +19,14 @@ try{
   console.error("ETHERS_LOAD_ERROR",e&&e.stack||e);
 }
 
+if(!express){
+  const http=require("http");
+  const fallback=http.createServer((req,res)=>{
+    res.writeHead(503,{"content-type":"application/json; charset=utf-8"});
+    res.end(JSON.stringify({ok:false,error:"EXPRESS_NOT_AVAILABLE"}));
+  });
+  fallback.listen(PORT,"0.0.0.0",()=>console.log(`BOOT: fallback server listening on ${PORT}`));
+}else{
 const app=express();
 app.disable("x-powered-by");
 app.use(express.json({limit:"32kb"}));
@@ -319,3 +334,4 @@ app.listen(PORT,"0.0.0.0",()=>{
   console.log(`RPC endpoints configured: ${RPCS.length}`);
   console.log(`Ethers available: ${!!ethers}`);
 });
+}
