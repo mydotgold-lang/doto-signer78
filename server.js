@@ -11,6 +11,8 @@ try{
 process.on("uncaughtException",e=>console.error("UNCAUGHT_EXCEPTION",e&&e.stack||e));
 process.on("unhandledRejection",e=>console.error("UNHANDLED_REJECTION",e&&e.stack||e));
 
+const PORT=Math.max(1,Number(process.env.PORT)||3000);
+
 let ethers=null;
 try{
   ethers=require("ethers").ethers;
@@ -30,8 +32,6 @@ if(!express){
 const app=express();
 app.disable("x-powered-by");
 app.use(express.json({limit:"32kb"}));
-
-const PORT=Math.max(1,Number(process.env.PORT)||3000);
 
 const RPCS=String(
   process.env.DOTONE_RPC_URLS ||
